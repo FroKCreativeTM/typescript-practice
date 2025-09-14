@@ -1,5 +1,9 @@
 import { readFile, writeFile } from 'fs/promises';
+import { Injectable } from '@nestjs/common';
 
+// @Injectable 데코레이터는 이 클래스가 NestJS의 의존성 주입 시스템에 의해 관리되는 서비스임을 나타낸다.
+// 이 데코레이터를 사용하면 다른 클래스에서 이 서비스를 주입받아 사용할 수 있다.
+@Injectable()
 export class MessagesRepository {
     async findOne(id: string) {
         // 파일을 읽어온다.

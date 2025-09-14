@@ -5,12 +5,7 @@ import { NotFoundException} from '@nestjs/common';
 
 @Controller('messages')
 export class MessagesController {
-    messagesService: MessagesService;
-
-    constructor() {
-        // 컨트롤러는 서비스를 주입받는다.
-        // 아래는 임시 코드!
-        this.messagesService = new MessagesService();
+    constructor(public messagesService: MessagesService) {
     }
 
     @Get()
