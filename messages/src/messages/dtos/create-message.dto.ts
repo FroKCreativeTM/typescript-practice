@@ -4,7 +4,8 @@
 import { IsString } from 'class-validator';
 
 /**
- * Data Transfer Object for creating a message.
+ * 메시지 생성 DTO (Data Transfer Object)
+ * 클라이언트로부터 메시지 생성 요청 시 사용되는 데이터 구조를 정의한다.
  */
 export class CreateMessageDto {
     @IsString()
