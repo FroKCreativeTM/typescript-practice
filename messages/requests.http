@@ -7,7 +7,7 @@ POST http://localhost:3000/messages
 content-type: application/json 
 
 {
-    "content": "Hello, World!"
+    "content": "Refactored message"
 }
 
 ### Get a specific message by Id
