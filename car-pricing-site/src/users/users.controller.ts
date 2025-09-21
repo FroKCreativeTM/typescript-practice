@@ -7,7 +7,6 @@ import { Controller,
     Patch, 
     Delete, 
     NotFoundException,
-    UseInterceptors,
     ClassSerializerInterceptor,
     Session,
 } from '@nestjs/common';
@@ -18,13 +17,11 @@ import { UserDto } from './dtos/user.dto';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { AuthService } from './auth.service';
 import { CurrentUser } from './decorators/current-user.decorator';
-import { CurrentUserInterceptor } from './interceptors/current-user.interceptor';
 import { User } from './user.entity';
 
 // 유저와 관련된 요청을 처리하는 컨트롤러
 @Controller('auth')
 @Serialize(UserDto) // 커스텀 데코레이터 사용 (모든 메서드에 일괄 적용)
-@UseInterceptors(CurrentUserInterceptor) // CurrentUser 인터셉터 적용
 export class UsersController {
     // UsersService를 주입
     constructor(
@@ -85,7 +82,6 @@ export class UsersController {
     }
 
     // GET ?email= 요청을 처리하는 메서드
-    @UseInterceptors(ClassSerializerInterceptor) // 응답 직렬화 인터셉터 적용
     @Get()
     findAllUsers(@Query('email') email: string) {
         const users = this.usersService.find(email);
