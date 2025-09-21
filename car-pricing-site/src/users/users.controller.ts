@@ -9,7 +9,7 @@ import { Controller,
     NotFoundException,
     UseInterceptors,
     ClassSerializerInterceptor,
-    Session
+    Session,
 } from '@nestjs/common';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import  { CreateUserDto } from './dtos/create-user.dto';
@@ -17,10 +17,14 @@ import { UsersService } from './users.service';
 import { UserDto } from './dtos/user.dto';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { AuthService } from './auth.service';
+import { CurrentUser } from './decorators/current-user.decorator';
+import { CurrentUserInterceptor } from './interceptors/current-user.interceptor';
+import { User } from './user.entity';
 
 // 유저와 관련된 요청을 처리하는 컨트롤러
 @Controller('auth')
 @Serialize(UserDto) // 커스텀 데코레이터 사용 (모든 메서드에 일괄 적용)
+@UseInterceptors(CurrentUserInterceptor) // CurrentUser 인터셉터 적용
 export class UsersController {
     // UsersService를 주입
     constructor(
@@ -44,11 +48,23 @@ export class UsersController {
         return user;
     }
 
-    // GET /auth/whoami 요청을 처리하는 메서드
+    // // GET /auth/whoami 요청을 처리하는 메서드
+    // @Get('/whoami')
+    // whoAmI(@Session() session: any) {
+    //     // 세션에서 userId를 사용하여 현재 로그인한 사용자 정보 반환
+    //     return this.usersService.findOne(session.userId);
+    // }
+
+    // 만약 데코레이터 없이 인터셉터만으로 구현한다면?
+    // @Get('/whoami')
+    // whoAmI(@Request() req: any) {
+    //     return req.currentUser;
+    // }
+
+    // 데코레이터 + 인터셉터 활용
     @Get('/whoami')
-    whoAmI(@Session() session: any) {
-        // 세션에서 userId를 사용하여 현재 로그인한 사용자 정보 반환
-        return this.usersService.findOne(session.userId);
+    whoAmI(@CurrentUser() user: User) {
+        return user;
     }
 
     // POST /auth/signout 요청을 처리하는 메서드
