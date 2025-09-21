@@ -16,18 +16,27 @@ import { UsersService } from './users.service';
 import { SerilizeInterceptor } from '../interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
 import { Serialize } from '../interceptors/serialize.interceptor';
+import { AuthService } from './auth.service';
 
 // 유저와 관련된 요청을 처리하는 컨트롤러
 @Controller('auth')
 @Serialize(UserDto) // 커스텀 데코레이터 사용 (모든 메서드에 일괄 적용)
 export class UsersController {
     // UsersService를 주입
-    constructor(private usersService: UsersService) {}
+    constructor(private usersService: UsersService,
+        private authService: AuthService
+    ) {}
 
     // POST /auth/signup 요청을 처리하는 메서드
     @Post('/signup')
     createUser(@Body() body: CreateUserDto) {   // 요청 본문을 CreateUserDto 타입으로 검증
-        this.usersService.create(body.email, body.password);
+        this.authService.signup(body.email, body.password);
+    }
+
+    // POST /auth/signin 요청을 처리하는 메서드
+    @Post('/signin')
+    signin(@Body() body: CreateUserDto) {
+        return this.authService.signin(body.email, body.password);
     }
 
     // GET /auth/:id 요청을 처리하는 메서드
