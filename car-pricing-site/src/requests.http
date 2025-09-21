@@ -1,6 +1,5 @@
 ### Create a new user
 
-### POST http://localhost:3000/auth/signin
 POST http://localhost:3000/auth/signup
 content-type:application/json
 
@@ -9,14 +8,29 @@ content-type:application/json
     "password": "mypassword"
 }
 
+### Sign in an existing user
+POST http://localhost:3000/auth/signin
+content-type:application/json
+
+{
+    "email": "test@test.com",
+    "password": "mypassword"
+}
+
+### Sign out the current user
+POST http://localhost:3000/auth/signout
+
 ### Find a particular user with a given id
-GET http://localhost:3000/auth/3
+GET http://localhost:3000/auth/7
+
+### get who am i
+GET http://localhost:3000/auth/whoami
 
 ### Find all users with a given email
 GET http://localhost:3000/auth?email=cscculture95@gmail.com
 
 ### Delete a particular user with a given id
-DELETE http://localhost:3000/auth/5
+DELETE http://localhost:3000/auth/7
 
 ### Update a particular user with a given id
 PATCH http://localhost:3000/auth/3

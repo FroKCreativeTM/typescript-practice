@@ -29,6 +29,11 @@ export class UsersService {
     // id로 사용자 찾기
     findOne(id: number) {
         // findOneBy는 특정 조건에 맞는 단일 엔티티를 찾을 때 사용
+        if(!id) { 
+            return null; 
+        }
+
+        // 주의: null을 주면 제일 첫 번째 엔티티를 반환
         return this.repo.findOneBy({ id });
     }
 
