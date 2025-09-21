@@ -13,9 +13,13 @@ import { Controller,
 import { UpdateUserDto } from './dtos/update-user.dto';
 import  { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
+import { SerilizeInterceptor } from '../interceptors/serialize.interceptor';
+import { UserDto } from './dtos/user.dto';
+import { Serialize } from '../interceptors/serialize.interceptor';
 
 // 유저와 관련된 요청을 처리하는 컨트롤러
 @Controller('auth')
+@Serialize(UserDto) // 커스텀 데코레이터 사용 (모든 메서드에 일괄 적용)
 export class UsersController {
     // UsersService를 주입
     constructor(private usersService: UsersService) {}
@@ -27,7 +31,6 @@ export class UsersController {
     }
 
     // GET /auth/:id 요청을 처리하는 메서드
-    @UseInterceptors(ClassSerializerInterceptor) // 응답 직렬화 인터셉터 적용
     @Get(':id')
     findUser(@Param('id') id: string) {
         // nestjs는 id를 문자열로 받기 때문에, 숫자로 변환 필요(자동 변환 X)

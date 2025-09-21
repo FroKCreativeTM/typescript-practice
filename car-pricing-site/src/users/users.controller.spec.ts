@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersController } from './users.controller';
+import { SerilizeInterceptor } from '../interceptors/serialize.interceptor';
 
 describe('UsersController', () => {
   let controller: UsersController;
