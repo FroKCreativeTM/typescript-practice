@@ -7,8 +7,8 @@ import { Controller,
     Patch, 
     Delete, 
     NotFoundException,
-    ClassSerializerInterceptor,
     Session,
+    UseGuards,
 } from '@nestjs/common';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import  { CreateUserDto } from './dtos/create-user.dto';
@@ -18,6 +18,7 @@ import { Serialize } from '../interceptors/serialize.interceptor';
 import { AuthService } from './auth.service';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { User } from './user.entity';
+import { AuthGuard } from '../guards/auth.guard';
 
 // 유저와 관련된 요청을 처리하는 컨트롤러
 @Controller('auth')
@@ -60,6 +61,7 @@ export class UsersController {
 
     // 데코레이터 + 인터셉터 활용
     @Get('/whoami')
+    @UseGuards(AuthGuard) // 인증 가드 적용
     whoAmI(@CurrentUser() user: User) {
         return user;
     }
